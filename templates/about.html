@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ get_text('about', lang) }} - {{ get_text('app_title', lang) }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark-color);
+        }
+
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: white;
+        }
+
+        .navbar-brand img {
+            margin-right: 10px;
+        }
+
+        .main-container {
+            min-height: calc(100vh - 160px);
+            padding: 40px 0;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            background-color: var(--secondary-color);
+            bottom: -10px;
+            left: 20%;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 15px 20px;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin-bottom: 0;
+        }
+
+        .team-member {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 5px solid var(--light-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member h5 {
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .team-member .role {
+            color: var(--secondary-color);
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-left: 10px;
+            border-left: 2px solid var(--secondary-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            left: -39px;
+            top: 5px;
+        }
+
+        .timeline-date {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .quote-card {
+            background-color: #f1f7fb;
+            border-left: 5px solid var(--secondary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .quote-card p {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .quote-card .author {
+            font-weight: 600;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='favicon.ico') }}" alt="Logo" width="30" height="30" class="d-inline-block align-top">
+                MedSR
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('home') }}">{{ get_text('home', lang) }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('about') }}">{{ get_text('about', lang) }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('technology') }}">{{ get_text('technology', lang) }}</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if lang == 'zh' %}中文{% else %}English{% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item {% if lang == 'en' %}active{% endif %}" href="/set_language/en">English</a></li>
+                            <li><a class="dropdown-item {% if lang == 'zh' %}active{% endif %}" href="/set_language/zh">中文</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container main-container">
+        <div class="text-center mb-5">
+            <h1 class="page-title">{{ get_text('about_title', lang) }}</h1>
+            <p class="lead">{{ get_text('about_subtitle', lang) }}</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Mission Card -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-bullseye me-2"></i> {{ get_text('mission', lang) }}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>{{ get_text('mission_desc', lang) }}</p>
+                                <p>{{ get_text('mission_points', lang) }}</p>
+                                <ul>
+                                    <li>{{ get_text('mission_point1', lang) }}</li>
+                                    <li>{{ get_text('mission_point2', lang) }}</li>
+                                    <li>{{ get_text('mission_point3', lang) }}</li>
+                                </ul>
+                                <p>{{ get_text('mission_belief', lang) }}</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <i class="fas fa-heartbeat feature-icon" style="font-size: 8rem; color: #e74c3c;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project History Card -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-history me-2"></i> {{ get_text('project_history', lang) }}
+                    </div>
+                    <div class="card-body">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">{{ get_text('january_2023', lang) }}</div>
+                                <h5>{{ get_text('inception', lang) }}</h5>
+                                <p>{{ get_text('inception_desc', lang) }}</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">{{ get_text('march_2023', lang) }}</div>
+                                <h5>{{ get_text('prototype', lang) }}</h5>
+                                <p>{{ get_text('prototype_desc', lang) }}</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">{{ get_text('june_2023', lang) }}</div>
+                                <h5>{{ get_text('expansion', lang) }}</h5>
+                                <p>{{ get_text('expansion_desc', lang) }}</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">{{ get_text('october_2023', lang) }}</div>
+                                <h5>{{ get_text('testimonials', lang) }}</h5>
+                                <p>{{ get_text('testimonials', lang) }}</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">{{ get_text('january_2024', lang) }}</div>
+                                <h5>{{ get_text('web_interface', lang) }}</h5>
+                                <p>{{ get_text('web_interface_desc', lang) }}</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">{{ get_text('present', lang) }}</div>
+                                <h5>{{ get_text('ongoing_development', lang) }}</h5>
+                                <p>{{ get_text('ongoing_development_desc', lang) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonials Card -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-comment-dots me-2"></i> {{ get_text('testimonials', lang) }}
+                    </div>
+                    <div class="card-body">
+                        <div class="quote-card">
+                            <p>{{ get_text('testimonial1', lang) }}</p>
+                            <div class="author">{{ get_text('testimonial1_author', lang) }}</div>
+                        </div>
+                        <div class="quote-card">
+                            <p>{{ get_text('testimonial2', lang) }}</p>
+                            <div class="author">{{ get_text('testimonial2_author', lang) }}</div>
+                        </div>
+                        <div class="quote-card">
+                            <p>{{ get_text('testimonial3', lang) }}</p>
+                            <div class="author">{{ get_text('testimonial3_author', lang) }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-users me-2"></i> {{ get_text('team', lang) }}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="team-member">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Team Member">
+                                    <h5>Dr. James Wilson</h5>
+                                    <div class="role">{{ get_text('lead_developer', lang) }}</div>
+                                    <p>{{ get_text('lead_developer_desc', lang) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="team-member">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team Member">
+                                    <h5>Dr. Emily Rodriguez</h5>
+                                    <div class="role">{{ get_text('medical_advisor', lang) }}</div>
+                                    <p>{{ get_text('medical_advisor_desc', lang) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="team-member">
+                                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Team Member">
+                                    <h5>Alex Thompson</h5>
+                                    <div class="role">{{ get_text('ml_engineer', lang) }}</div>
+                                    <p>{{ get_text('ml_engineer_desc', lang) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>{{ get_text('footer_copyright', lang) }}</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>{{ get_text('footer_powered', lang) }}</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
