@@ -25,6 +25,12 @@ except ImportError:
 # Detect deployment environment
 IS_CLOUD_DEPLOYMENT = os.environ.get('IS_CLOUD_DEPLOYMENT', 'false').lower() == 'true'
 
+# Set headless mode for OpenCV in cloud deployment
+if IS_CLOUD_DEPLOYMENT:
+    os.environ['OPENCV_IO_ENABLE_JASPER'] = '1'  # Enable JPEG2000 support
+    os.environ['PYTHONPATH'] = '/home/appuser/.local/lib/python3.9/site-packages'
+    logger.info("Setting OpenCV to headless mode for cloud deployment")
+
 # Set up file paths for uploads and results
 if IS_CLOUD_DEPLOYMENT:
     # Use temporary directory for cloud deployment

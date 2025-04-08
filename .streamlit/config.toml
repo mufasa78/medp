@@ -11,3 +11,9 @@ enableXsrfProtection = false
 
 [browser]
 gatherUsageStats = false
+
+[logger]
+level = "info"
+
+[env]
+IS_CLOUD_DEPLOYMENT = "true"
