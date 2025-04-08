@@ -342,7 +342,7 @@ def set_language(lang):
     """Set the application language"""
     if lang in ['en', 'zh']:
         st.session_state.language = lang
-        st.experimental_rerun()
+        st.rerun()
 
 def display_header():
     """Display the application header with language selection"""
@@ -793,7 +793,7 @@ def main():
                     if key != 'language':  # Preserve language setting
                         del st.session_state[key]
                 st.success("Cache cleared!")
-                st.experimental_rerun()
+                st.rerun()
 
         # Load models if not already loaded
         if not models:
